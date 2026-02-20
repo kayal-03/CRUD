@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #121212;
+            color: #eee;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 600px;
+            margin: 40px auto;
+            background: #1e1e1e;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+        }
+        h1 {
+            text-align: center;
+            color: #90caf9;
+        }
+        .stats {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #bbb;
+        }
+        form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            background: #2c2c2c;
+            color: #eee;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            background: #90caf9;
+            color: #000;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+        }
+        button:hover {
+            background: #64b5f6;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #2c2c2c;
+            margin-bottom: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        li.completed {
+            text-decoration: line-through;
+            color: #777;
+        }
+        .actions form {
+            display: inline;
+        }
+        .actions button {
+            margin-left: 5px;
+            border-radius: 4px;
+        }
+        .actions button.edit { background: #fbc02d; }
+        .actions button.delete { background: #e53935; color: #fff; }
+        .actions button.toggle { background: #43a047; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Task Manager</h1>
+        <div class="stats">
+            <p>Incomplete: {{ incomplete }} | Completed: {{ completed_count }}</p>
+        </div>
+        <form action="{{ url_for('add') }}" method="POST">
+            <input type="text" name="title" placeholder="Enter new task">
+            <button type="submit">Add</button>
+        </form>
+        <ul>
+            {% for task in tasks %}
+            <li class="{% if task.completed %}completed{% endif %}">
+                <span>{{ task.title }}</span>
+                <div class="actions">
+                    <form action="{{ url_for('toggle', task_id=task.id) }}" method="POST">
+                        <button type="submit" class="toggle">Toggle</button>
+                    </form>
+                    <form action="{{ url_for('edit', task_id=task.id) }}" method="POST">
+                        <input type="text" name="title" placeholder="Edit task">
+                        <button type="submit" class="edit">Edit</button>
+                    </form>
+                    <form action="{{ url_for('delete', task_id=task.id) }}" method="POST">
+                        <button type="submit" class="delete">Delete</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

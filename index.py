@@ -18,7 +18,7 @@ def index():
     completed_count = sum(1 for t in tasks if t["completed"])
 
     return render_template(
-        "index_t.html",
+        "index.html",
         tasks=tasks,
         incomplete=incomplete,
         completed_count=completed_count
@@ -73,3 +73,4 @@ def delete(task_id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
